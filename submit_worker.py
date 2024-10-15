@@ -54,15 +54,15 @@ def fill_report(submit_id: str) -> None:
     worker_context.report.append(f'  SubmitId: {submit_id}' + os.linesep)
     worker_context.report.append(f'  Student: {worker_context.user_id}' + os.linesep)
     worker_context.report.append(f'  Experiment: {worker_context.exp_id}' + os.linesep)
-    worker_context.report.append(f'  Title: {""}' + os.linesep)
+    worker_context.report.append(f'  Title: {worker_context.test_framework.get_title()}' + os.linesep)
     worker_context.report.append(f'  Details:' + os.linesep)
-    for index, info in enumerate(worker_context.test_framework.run()):
+    for index, eval_ in enumerate(worker_context.test_framework.run()):
         worker_context.report.append(
-            f'    [EvalPoint_{index:02d}] {info.test_brief}: {"PASSED" if info.test_result.is_succeed else "FAILED"}'
+            f'    [EvalPoint_{index:02d}] {eval_.brief}: {"PASSED" if eval_.result.is_succeed else "FAILED"}'
             + os.linesep)
-        if not info.test_result.is_succeed and info.test_result.error_message:
+        if not eval_.result.is_succeed and eval_.result.error_message:
             worker_context.report.append(
-                f'      Message: {info.test_result.error_message}' + os.linesep)
+                f'      Message: {eval_.result.error_message}' + os.linesep)
     worker_context.report.append(
         f'  Summary: {worker_context.test_framework.get_pass_count() / len(worker_context.test_framework) * 100}% PASSED' + os.linesep)
 
@@ -79,7 +79,7 @@ def worker_thread(submit_id:str):
 
 
     exe: list[str] = ['python3', 'main.py', 'local', '-s', worker_context.path, 'run']
-    worker_context.test_framework = TestFramework(suite_root=Path.cwd() / 'test_suites',
+    worker_context.test_framework = TestFramework(suite_root=Path.cwd() / 'eval_suites',
                                                   suite_id=worker_context.exp_id,
                                                   os_daemon_exe=exe,
                                                   os_daemon_cwd=Path(config.DAEMON_PATH))
