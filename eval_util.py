@@ -7,12 +7,12 @@ from os_daemon import OsDaemon
 @dataclass
 class EvalResult:
     is_succeed: bool
-    error_message: str | None = None
+    failed_message: str | None = None
 
     def __post_init__(self) -> None:
-        if self.is_succeed and self.error_message:
+        if self.is_succeed and self.failed_message:
             raise ValueError("error_message cannot be set when is_succeed is True")
-        elif not self.is_succeed and not self.error_message:
+        elif not self.is_succeed and not self.failed_message:
             raise ValueError("error_message cannot be set when is_succeed is True")
 
 

@@ -60,9 +60,9 @@ def fill_report(submit_id: str) -> None:
         worker_context.report.append(
             f'    [EvalPoint_{index:02d}] {eval_.brief}: {"PASSED" if eval_.result.is_succeed else "FAILED"}'
             + os.linesep)
-        if not eval_.result.is_succeed and eval_.result.error_message:
+        if not eval_.result.is_succeed and eval_.result.failed_message:
             worker_context.report.append(
-                f'      Message: {eval_.result.error_message}' + os.linesep)
+                f'      Message: {eval_.result.failed_message}' + os.linesep)
     worker_context.report.append(
         f'  Summary: {worker_context.test_framework.get_pass_count() / len(worker_context.test_framework) * 100}% PASSED' + os.linesep)
 
