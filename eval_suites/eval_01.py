@@ -1,7 +1,7 @@
 from os_daemon import OsDaemon
 from eval_util import EvalResult,eval_case
 
-EVAL_TITLE:str = 'eval script template'
+EVAL_TITLE: str = 'eval script template'
 
 @eval_case('Echo Eval 1')
 def echo_test_01(osd: OsDaemon) -> EvalResult:
